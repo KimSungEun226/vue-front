@@ -1,28 +1,24 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+  <body id="app">
+    <div id="wrapper">
+      <index-page></index-page>
+      <side-bar
+        v-if="$route.path !== '/write' && $route.path !== '/404'"
+      ></side-bar>
+    </div>
+  </body>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
+import SideBar from "./components/SideBar.vue";
+import IndexPage from "./views/IndexPage.vue";
 export default {
-  name: 'app',
+  name: "app",
   components: {
-    HelloWorld
-  }
-}
+    SideBar,
+    IndexPage,
+  },
+};
 </script>
 
-<style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
+<style></style>
