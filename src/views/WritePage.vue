@@ -15,8 +15,7 @@
       <!-- Break -->
       <div class="6u$">
         <div class="select-wrapper">
-          <select name="demo-category" id="demo-category" v-model="category">
-            <option value="">- Category -</option>
+          <select name="demo-category" id="demo-category" v-model="categoryId">
             <option value="1">웃긴자료</option>
             <option value="2">자유게시판</option>
             <option value="3">음식게시판</option>
@@ -44,6 +43,7 @@
               class="special"
             />
           </li>
+          <li><input @click="moveListPage" type="button" value="목록" /></li>
         </ul>
       </div>
     </div>
@@ -57,14 +57,59 @@ export default {
     return {
       title: "",
       content: "",
-      category: "",
+      categoryId: "",
     };
+  },
+  created() {
+    this.categoryId = this.$route.query.categoryId;
   },
   mounted() {
     $("#summernote").summernote({
       height: 300,
       width: 1200,
       lang: "ko-KR",
+      toolbar: [
+        // [groupName, [list of button]]
+        ["fontname", ["fontname"]],
+        ["fontsize", ["fontsize"]],
+        ["style", ["bold", "italic", "underline", "strikethrough", "clear"]],
+        ["color", ["forecolor", "color"]],
+        ["table", ["table"]],
+        ["para", ["ul", "ol", "paragraph"]],
+        ["height", ["height"]],
+        ["insert", ["picture", "link", "video"]],
+        ["view", ["fullscreen", "codeview", "help"]],
+      ],
+      fontNames: [
+        "Arial",
+        "Arial Black",
+        "Comic Sans MS",
+        "Courier New",
+        "맑은 고딕",
+        "궁서",
+        "굴림체",
+        "굴림",
+        "돋움체",
+        "바탕체",
+      ],
+      fontSizes: [
+        "8",
+        "9",
+        "10",
+        "11",
+        "12",
+        "14",
+        "16",
+        "18",
+        "20",
+        "22",
+        "24",
+        "28",
+        "30",
+        "36",
+        "50",
+        "72",
+      ],
     });
   },
   methods: {
@@ -72,16 +117,20 @@ export default {
       let data = {
         title: this.title,
         content: $("#summernote").summernote("code"),
-        category: this.category,
+        categoryId: this.categoryId,
       };
       let code = await createBoard(data);
 
       if (code === 200) {
         if (!alert("등록되었읍니다..."))
-          this.$router.replace({ path: "/board/1" });
+          this.$router.replace({ path: "/board/" + this.categoryId });
       } else {
-        if (!alert("등록실패,,,,")) this.$router.replace({ path: "/board/1" });
+        if (!alert("등록실패,,,,"))
+          this.$router.replace({ path: "/board/" + this.categoryId });
       }
+    },
+    moveListPage() {
+      this.$router.push({ path: "/board/" + this.$route.query.categoryId });
     },
   },
 };

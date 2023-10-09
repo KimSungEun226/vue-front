@@ -10,17 +10,12 @@
           <li>
             <router-link to="/main"><h3>휘비고메인</h3></router-link>
           </li>
-          <li>
-            <router-link to="/board/1"><h3>웃긴자료</h3></router-link>
-          </li>
-          <li>
-            <router-link to="/board/2"><h3>자유게시판</h3></router-link>
-          </li>
-          <li>
-            <router-link to="/board/3"><h3>음식게시판</h3></router-link>
-          </li>
-          <li>
-            <router-link to="/board/4"><h3>MBTI 게시판</h3></router-link>
+          <li v-for="item in boardCategoryList" v-bind:key="item.categoryId">
+            <h3>
+              <a @click="moveListPage(item.categoryId, item.categoryName)">{{
+                item.categoryName
+              }}</a>
+            </h3>
           </li>
         </ul>
       </nav>
@@ -39,7 +34,25 @@
 </template>
 
 <script>
+import { getBoardCategories } from "../api/index";
+
 export default {
   name: "SideBar",
+  data() {
+    return {
+      boardCategoryList: [],
+      categoryId: "",
+    };
+  },
+  async created() {
+    let response = await getBoardCategories();
+    this.boardCategoryList = response.datas;
+  },
+  methods: {
+    moveListPage(categoryId) {
+      if (this.$route.path.split("/")[2] != categoryId)
+        this.$router.push({ path: "/board/" + categoryId });
+    },
+  },
 };
 </script>

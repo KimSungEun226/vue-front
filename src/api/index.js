@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import axios from "axios";
 
 // 1. HTTP Request & Reponse 관련된 기본 설정
@@ -35,4 +36,30 @@ async function getBoard(data) {
   }
 }
 
-export { createBoard, getBoards, getBoard };
+async function getBoardCategories() {
+  try {
+    let response = await axios.get(`${config.baseUrl}boardCategory`);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+async function getBoardCategoryName(categoryId) {
+  try {
+    let response = await axios.get(
+      `${config.baseUrl}boardCategory/${categoryId}`
+    );
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export {
+  createBoard,
+  getBoards,
+  getBoard,
+  getBoardCategories,
+  getBoardCategoryName,
+};

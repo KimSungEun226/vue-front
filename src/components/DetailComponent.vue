@@ -4,9 +4,7 @@
     <h3>작성자</h3>
     <h4>게시판 종류</h4>
     <hr />
-    <div>
-      <p v-html="board.content"></p>
-    </div>
+    <div v-html="board.content"></div>
   </div>
 </template>
 
