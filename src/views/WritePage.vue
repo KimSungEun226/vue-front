@@ -117,16 +117,20 @@ export default {
       let data = {
         title: this.title,
         content: $("#summernote").summernote("code"),
-        categoryId: this.categoryId,
+        category: {
+          categoryId: this.categoryId,
+        },
       };
       let code = await createBoard(data);
 
       if (code === 200) {
-        if (!alert("등록되었읍니다..."))
+        this.$alert(null, "등록되었읍니다...", "success").then(() => {
           this.$router.replace({ path: "/board/" + this.categoryId });
+        });
       } else {
-        if (!alert("등록실패,,,,"))
+        this.$alert(null, "등록실패,,,", "success").then(() => {
           this.$router.replace({ path: "/board/" + this.categoryId });
+        });
       }
     },
     moveListPage() {

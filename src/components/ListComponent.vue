@@ -25,7 +25,7 @@
       <div class="noBoard" v-else>
         <h2>게시물이 존재하지 않습니다....</h2>
       </div>
-      <div v-if="boardsList.length > 0" class="moreButton">
+      <div v-if="boardsList.length < totalCount" class="moreButton">
         <a
           @click="getMoreBoards"
           v-bind:disabled="moreProcessing"
@@ -65,10 +65,11 @@ export default {
     this.categoryId = this.$route.params.id;
     let boardListResponse = await getBoards({
       categoryId: this.categoryId,
-      size: 2,
+      size: 10,
       page: 0,
     });
     this.boardsList = boardListResponse.datas;
+    this.totalCount = boardListResponse.totalPage;
 
     let categoryNameResponse = await getBoardCategoryName(this.categoryId);
     this.categoryName = categoryNameResponse.data.categoryName;
@@ -87,7 +88,7 @@ export default {
       this.moreProcessing = true;
       let boardListResponse = await getBoards({
         categoryId: this.categoryId,
-        size: 2,
+        size: 10,
         page: this.page,
       });
       this.boardsList = this.boardsList.concat(boardListResponse.datas);
